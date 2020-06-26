@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:halfwaiteradminapp/Model_Classes/MenuListModel.dart';
@@ -35,6 +36,30 @@ class _MenuListState extends State<MenuList> {
 //  }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    BackButtonInterceptor.add(myInterceptor);
+  }
+
+  @override
+  void dispose() {
+    BackButtonInterceptor.remove(myInterceptor);
+    super.dispose();
+  }
+
+  bool myInterceptor(bool stopDefaultButtonEvent) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+          builder: (context) => SideMain(
+              widget.id,widget.name,widget.onStatus)),
+    );
+    return true;
+  }
+
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
@@ -55,20 +80,20 @@ class _MenuListState extends State<MenuList> {
           )
         ],
       ),
-      floatingActionButton: new FloatingActionButton(
-          elevation: 0.0,
-          child: new Icon(Icons.add),
-          backgroundColor: new Color(0xFFE57373),
-          onPressed: (){
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => AddMenu(
-                      widget.id,widget.name,widget.onStatus)),
-            );
-//            AddMenu(widget.id,widget.name,widget.onStatus);
-          }
-      ),
+//      floatingActionButton: new FloatingActionButton(
+//          elevation: 0.0,
+//          child: new Icon(Icons.add),
+//          backgroundColor: new Color(0xFFE57373),
+//          onPressed: (){
+//            Navigator.pushReplacement(
+//              context,
+//              MaterialPageRoute(
+//                  builder: (context) => AddMenu(
+//                      widget.id,widget.name,widget.onStatus)),
+//            );
+////            AddMenu(widget.id,widget.name,widget.onStatus);
+//          }
+//      ),
     );
   }
 
@@ -103,20 +128,66 @@ class _MenuListState extends State<MenuList> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 4.0),
-                    child: CircleAvatar(
-                        radius: 28,
-                        backgroundColor: Colors.deepOrangeAccent,
-                        child: IconButton(
+                    child: Row(
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.only(right:8.0),
+                          child: CircleAvatar(
+                              radius: 20,
+                              backgroundColor: Colors.deepOrangeAccent,
+                              child: IconButton(
+                                splashColor: Colors.blue,
+                                icon: Icon(
+                                  Icons.add,
+                                  size: 20,
+                                  color: Colors.black,
+                                ),
+                                tooltip: "Add Menu",
+                                onPressed: () {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => AddMenu(
+                                            widget.id,widget.name,widget.onStatus)),
+                                  );
+                                },
+                              )),
+                        ),
+                         InkWell(
                           splashColor: Colors.blue,
-                          icon: Icon(
-                            Icons.dashboard,
-                            size: 28,
-                            color: Colors.black,
-                          ),
-                          tooltip: "DashBoard",
-                          onPressed: () {
+                          onTap: (){
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SideMain(
+                                      widget.id,widget.name,widget.onStatus)),
+                            );
                           },
-                        )),
+                          child: CircleAvatar(
+                            radius: 20,
+                            backgroundColor: Colors.deepOrangeAccent,
+//                        child: IconButton(
+//                          splashColor: Colors.blue,
+//                          icon: Icon(
+//                            Icons.dashboard,
+//                            size: 28,
+//                            color: Colors.black,
+//                          ),
+//                          tooltip: "DashBoard",
+//                          onPressed: () {
+//                            Navigator.pushReplacement(
+//                              context,
+//                              MaterialPageRoute(
+//                                  builder: (context) => SideMain(
+//                                      widget.id,widget.name,widget.onStatus)),
+//                            );
+//                          },
+//                        )
+                            child: Image.asset('assets/images/dashboard.png'),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               )

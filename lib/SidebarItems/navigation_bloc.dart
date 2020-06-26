@@ -2,6 +2,8 @@ import 'package:bloc/bloc.dart';
 import 'package:halfwaiteradminapp/Dashboard/Dashboard.dart';
 import 'package:halfwaiteradminapp/SideNavPages/CategoryList.dart';
 import 'package:halfwaiteradminapp/SideNavPages/Delivery.dart';
+import 'package:halfwaiteradminapp/SideNavPages/DeliveryNew.dart';
+import 'package:halfwaiteradminapp/SideNavPages/DeliveryRerpot.dart';
 import 'package:halfwaiteradminapp/SideNavPages/MenuList.dart';
 import 'package:halfwaiteradminapp/SideNavPages/ParentCategoryList.dart';
 
@@ -10,9 +12,10 @@ enum NavigationEvents {
 
   DashBoardClickedEvent,
   DeliveryClickedEvent,
+  DeliveryReportClickedEvent,
   MenuListClickedEvent,
   CategoryClickedEvent,
-  ParentCategoryClickedEvent,
+
 //  BillPhotoClickedEvent,
 //  AttendanceClickedEvent,
 //  TransportationClickedEvent,
@@ -42,16 +45,16 @@ class NavigationBloc extends Bloc<NavigationEvents, NavigationStates> {
         yield Dashboard(id,name,onStatus);
         break;
       case NavigationEvents.DeliveryClickedEvent:
-        yield Delivery(id,name);
+        yield Delivery(id,name,onStatus);
         break;
       case NavigationEvents.MenuListClickedEvent:
         yield MenuList(id,name,onStatus);
         break;
       case NavigationEvents.CategoryClickedEvent:
-        yield CategoryList(id,name);
+        yield CategoryList(id,name,onStatus);
         break;
-      case NavigationEvents.ParentCategoryClickedEvent:
-        yield ParentCategoryList(id,name);
+      case NavigationEvents.DeliveryReportClickedEvent:
+        yield DeliveryReport(id,name,onStatus);
         break;
 //      case NavigationEvents.AttendanceClickedEvent:
 //        yield Attendance(id,name,sitename,siteId);

@@ -141,10 +141,13 @@ class _AddCategoryState extends State<AddCategory> {
                         width: ScreenUtil.getInstance().setWidth(235),
                         height: ScreenUtil.getInstance().setHeight(80),
                         decoration: BoxDecoration(
-                            gradient: LinearGradient(colors: [
-                              Colors.orange,
-                              Colors.deepOrangeAccent,
-                            ]),
+                            gradient: LinearGradient(
+                              colors: <Color>[
+                                Color(0xFF0D47A1),
+                                Color(0xFF1976D2),
+                                Color(0xFF42A5F5),
+                              ],
+                            ),
                             borderRadius: BorderRadius.circular(6.0),
                             boxShadow: [
                               BoxShadow(
@@ -257,7 +260,7 @@ class _AddCategoryState extends State<AddCategory> {
       setState(() {
         _isLoading = false;
       });
-      print(response.body);
+//      print(response.body);
     }
   }
 
@@ -275,10 +278,13 @@ class _AddCategoryState extends State<AddCategory> {
                 width: ScreenUtil.getInstance().setWidth(120),
                 height: ScreenUtil.getInstance().setHeight(50),
                 decoration: BoxDecoration(
-                    gradient: LinearGradient(colors: [
-                      Colors.orange,
-                      Colors.deepOrangeAccent,
-                    ]),
+                    gradient: LinearGradient(
+                      colors: <Color>[
+                        Color(0xFF0D47A1),
+                        Color(0xFF1976D2),
+                        Color(0xFF42A5F5),
+                      ],
+                    ),
                     borderRadius: BorderRadius.circular(6.0),
                     border: Border.all(color: Colors.black, width: 1.5),
                     boxShadow: [
@@ -314,10 +320,13 @@ class _AddCategoryState extends State<AddCategory> {
                 width: ScreenUtil.getInstance().setWidth(120),
                 height: ScreenUtil.getInstance().setHeight(50),
                 decoration: BoxDecoration(
-                    gradient: LinearGradient(colors: [
-                      Colors.orange,
-                      Colors.deepOrangeAccent,
-                    ]),
+                    gradient: LinearGradient(
+                      colors: <Color>[
+                        Color(0xFF0D47A1),
+                        Color(0xFF1976D2),
+                        Color(0xFF42A5F5),
+                      ],
+                    ),
                     borderRadius: BorderRadius.circular(6.0),
                     border: Border.all(color: Colors.black, width: 1.5),
                     boxShadow: [

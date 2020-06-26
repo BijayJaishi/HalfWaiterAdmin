@@ -1,14 +1,16 @@
+import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
 import 'package:halfwaiteradminapp/Model_Classes/CategoryListModel.dart';
 import 'package:http/http.dart' as http;
 import 'package:halfwaiteradminapp/SidebarItems/navigation_bloc.dart';
 
+import '../MainSideNav.dart';
 import 'AddCategory.dart';
 
 class CategoryList extends StatefulWidget with NavigationStates {
-  final String id,name;
+  final String id,name,onStatus;
 
-  CategoryList(this.id, this.name);
+  CategoryList(this.id, this.name,this.onStatus);
 
   @override
   _CategoryListState createState() => _CategoryListState();
@@ -26,6 +28,28 @@ class _CategoryListState extends State<CategoryList> {
 //      MaterialPageRoute(builder: (context) => SiteTabView(sitesName[index].siteName,sitesName[index].siteId)),
 //    );
 //  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    BackButtonInterceptor.add(myInterceptor);
+  }
+
+  @override
+  void dispose() {
+    BackButtonInterceptor.remove(myInterceptor);
+    super.dispose();
+  }
+
+  bool myInterceptor(bool stopDefaultButtonEvent) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+          builder: (context) => SideMain(
+              widget.id,widget.name,widget.onStatus)),
+    );
+    return true;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -111,26 +135,39 @@ class _CategoryListState extends State<CategoryList> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 4.0),
-                    child: CircleAvatar(
+                    child: InkWell(
+                      splashColor: Colors.blue,
+                      onTap: (){
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SideMain(
+                                  widget.id,widget.name,widget.onStatus)),
+                        );
+                      },
+                      child: CircleAvatar(
                         radius: 28,
                         backgroundColor: Colors.deepOrangeAccent,
-                        child: IconButton(
-                          splashColor: Colors.blue,
-                          icon: Icon(
-                            Icons.dashboard,
-                            size: 28,
-                            color: Colors.black,
-                          ),
-                          tooltip: "DashBoard",
-                          onPressed: () {
+//                        child: IconButton(
+//                          splashColor: Colors.blue,
+//                          icon: Icon(
+//                            Icons.dashboard,
+//                            size: 28,
+//                            color: Colors.black,
+//                          ),
+//                          tooltip: "DashBoard",
+//                          onPressed: () {
 //                            Navigator.pushReplacement(
 //                              context,
 //                              MaterialPageRoute(
-//                                  builder: (context) =>
-//                                      DashBoardManager(widget.id, widget.name)),
+//                                  builder: (context) => SideMain(
+//                                      widget.id,widget.name,widget.onStatus)),
 //                            );
-                          },
-                        )),
+//                          },
+//                        )
+                        child: Image.asset('assets/images/dashboard.png'),
+                      ),
+                    ),
                   ),
                 ],
               )

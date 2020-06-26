@@ -21,6 +21,34 @@ class _MyAppState extends State<MyApp> {
   DateTime currentBackPressTime;
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    getStringValuesSF();
+  }
+
+  getStringValuesSF() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var userId = prefs.getString('id');
+    var name = prefs.getString('name');
+    var active = prefs.getString('active');
+    var onStatus = prefs.getString('onStatus');
+    if (prefs.getString('email') != null && active=="1"){
+      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => SideMain(userId,name,onStatus)), (Route<dynamic> route) => false);
+    }else {
+      Fluttertoast.showToast(
+          msg: "sorry ! your account is currently inactive",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.red,
+          timeInSecForIos: 1
+      );
+    }
+    return prefs.getString('email');
+  }
+
+  @override
   Widget build(BuildContext context) {
     ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
     ScreenUtil.instance =
@@ -66,7 +94,7 @@ class _MyAppState extends State<MyApp> {
                 alignment: Alignment.center,
                 decoration: new BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage("assets/images/e.png"),
+                      image: AssetImage("assets/images/logoOnlyHead.png"),
                       fit: BoxFit.cover),
                 ),
               ),

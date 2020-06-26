@@ -36,22 +36,22 @@ class _FormCardState extends State<FormCard> {
     // TODO: implement initState
     super.initState();
 
-    getStringValuesSF();
+//    getStringValuesSF();
 
   }
-  getStringValuesSF() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    var userId = prefs.getString('id');
-    var name = prefs.getString('name');
-    var active = prefs.getString('active');
-    if (prefs.getString('email') != null && active == '1') {
-      _email = prefs.getString('email');
-      _password = prefs.getString('password');
-
-      signIn(_email, _password);
-
-    }
-  }
+//  getStringValuesSF() async {
+//    SharedPreferences prefs = await SharedPreferences.getInstance();
+//    var userId = prefs.getString('id');
+//    var name = prefs.getString('name');
+//    var active = prefs.getString('active');
+//    if (prefs.getString('email') != null && active == '1') {
+//      _email = prefs.getString('email');
+//      _password = prefs.getString('password');
+//
+//      signIn(_email, _password);
+//
+//    }
+//  }
 
   @override
   Widget build(BuildContext context) {
@@ -185,10 +185,13 @@ class _FormCardState extends State<FormCard> {
                   width: ScreenUtil.getInstance().setWidth(235),
                   height: ScreenUtil.getInstance().setHeight(80),
                   decoration: BoxDecoration(
-                      gradient: LinearGradient(colors: [
-                        Colors.orange,
-                        Colors.deepOrangeAccent,
-                      ]),
+                      gradient: LinearGradient(
+                        colors: <Color>[
+                          Color(0xFF0D47A1),
+                          Color(0xFF1976D2),
+                          Color(0xFF42A5F5),
+                        ],
+                      ),
                       borderRadius: BorderRadius.circular(6.0),
                       boxShadow: [
                         BoxShadow(

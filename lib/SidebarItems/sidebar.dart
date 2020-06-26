@@ -18,11 +18,11 @@ class SideBar extends StatefulWidget {
 
 class _SideBarState extends State<SideBar>
     with SingleTickerProviderStateMixin<SideBar> {
-  Color _addDashcolor = Colors.deepOrangeAccent;
+  Color _addDashcolor = Colors.blueAccent;
   Color _adddevcolor = Colors.white;
+  Color _deliveryReportcolor = Colors.white;
   Color _addmenuListcolor = Colors.white;
   Color _categorycolor = Colors.white;
-  Color _parentcategorycolor = Colors.white;
 //  Color _attendcolor = Colors.white;
 //  Color _transcolor = Colors.white;
 //  Color _stockcolor = Colors.white;
@@ -104,28 +104,22 @@ class _SideBarState extends State<SideBar>
                                     height: 115,
                                     child: Card(
                                       margin: EdgeInsets.all(0.0),
-                                      color: Colors.deepOrangeAccent,
-                                      child: Align(
-                                        alignment: Alignment.center,
-                                        child: ListTile(
-                                          title: Text(
-                                            "Welcome",
+                                      color: Colors.green,
+                                      child: ListTile(
+                                        title: Text(
+                                          "Welcome",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 30,
+                                              fontWeight: FontWeight.w800),
+                                        ),
+                                        subtitle: Padding(
+                                          padding: const EdgeInsets.only(top:8.0),
+                                          child: Text(
+                                            widget.name,
                                             style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 30,
-                                                fontWeight: FontWeight.w800),
-                                          ),
-                                          subtitle: FittedBox(
-                                            fit:BoxFit.scaleDown,
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(top:8.0),
-                                              child: Text(
-                                                widget.name,
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 30,
-                                                ),
-                                              ),
+                                              color: Colors.black,
+                                              fontSize: 30,
                                             ),
                                           ),
                                         ),
@@ -145,15 +139,16 @@ class _SideBarState extends State<SideBar>
 
 
                                   MenuItem(
-                                    image: AssetImage('assets/images/internaldashboard.png'),
+                                    image: AssetImage('assets/images/dashboard.png'),
                                     title: "DashBoard",
                                     color: _addDashcolor,
                                     onTap: () {
-                                      _addDashcolor = Colors.deepOrangeAccent;
+                                      _addDashcolor = Colors.blueAccent;
                                       _adddevcolor = Colors.white;
+                                      _deliveryReportcolor = Colors.white;
                                       _addmenuListcolor = Colors.white;
                                       _categorycolor = Colors.white;
-                                      _parentcategorycolor = Colors.white;
+
 //                                      _attendcolor = Colors.white;
 //                                      _transcolor = Colors.white;
 //                                      _stockcolor = Colors.white;
@@ -174,15 +169,16 @@ class _SideBarState extends State<SideBar>
                                   ),
 
                                   MenuItem(
-                                    image: AssetImage('assets/images/supplier_list.png'),
+                                    image: AssetImage('assets/images/delivery.png'),
                                     title: "Delivery",
                                     color: _adddevcolor,
                                     onTap: () {
                                       _addDashcolor = Colors.white;
-                                      _adddevcolor = Colors.deepOrangeAccent;
+                                      _adddevcolor = Colors.blueAccent;
+                                      _deliveryReportcolor = Colors.white;
                                       _addmenuListcolor = Colors.white;
                                       _categorycolor = Colors.white;
-                                      _parentcategorycolor = Colors.white;
+
 //                                      _attendcolor = Colors.white;
 //                                      _transcolor = Colors.white;
 //                                      _stockcolor = Colors.white;
@@ -201,16 +197,45 @@ class _SideBarState extends State<SideBar>
                                     thickness: 0.5,
                                     color: Colors.grey.withOpacity(1),
                                   ),
+
                                   MenuItem(
-                                    image: AssetImage('assets/images/supplier_list.png'),
+                                    image: AssetImage('assets/images/report.png'),
+                                    title: "Delivery Report List",
+                                    color:_deliveryReportcolor ,
+                                    onTap: () {
+                                      _addDashcolor = Colors.white;
+                                      _adddevcolor = Colors.white;
+                                      _deliveryReportcolor = Colors.blueAccent;
+                                      _addmenuListcolor = Colors.white;
+                                      _categorycolor = Colors.white;
+
+//                                      _attendcolor = Colors.white;
+//                                      _transcolor = Colors.white;
+//                                      _stockcolor = Colors.white;
+//                                      _expensecolor =Colors.white;
+//                                      _supplistcolor = Colors.white;
+//                                      _prodlistcolor = Colors.white;
+//                                      _unitlistcolor = Colors.white;
+                                      onIconPressed();
+                                      BlocProvider.of<NavigationBloc>(context)
+                                          .add(NavigationEvents.DeliveryReportClickedEvent);
+                                    },
+                                  ),
+                                  Divider(
+                                    height: 2,
+                                    thickness: 0.5,
+                                    color: Colors.grey.withOpacity(1),
+                                  ),
+                                  MenuItem(
+                                    image: AssetImage('assets/images/menuList.png'),
                                     title: "Menu List",
                                     color: _addmenuListcolor,
                                     onTap: () {
                                       _addDashcolor = Colors.white;
                                       _adddevcolor = Colors.white;
-                                      _addmenuListcolor = Colors.deepOrangeAccent;
+                                      _deliveryReportcolor = Colors.white;
+                                      _addmenuListcolor = Colors.blueAccent;
                                       _categorycolor = Colors.white;
-                                      _parentcategorycolor = Colors.white;
 //                                      _attendcolor = Colors.white;
 //                                      _transcolor = Colors.white;
 //                                      _stockcolor = Colors.white;
@@ -229,15 +254,15 @@ class _SideBarState extends State<SideBar>
                                     color: Colors.grey.withOpacity(1),
                                   ),
                                   MenuItem(
-                                    image: AssetImage('assets/images/internaldashboard.png'),
+                                    image: AssetImage('assets/images/category.png'),
                                     title: "Category List",
                                     color: _categorycolor,
                                     onTap: () {
                                       _addDashcolor = Colors.white;
                                       _adddevcolor = Colors.white;
+                                      _deliveryReportcolor = Colors.white;
                                       _addmenuListcolor = Colors.white;
-                                      _categorycolor = Colors.deepOrangeAccent;
-                                      _parentcategorycolor = Colors.white;
+                                      _categorycolor = Colors.blueAccent;
 //                                      _attendcolor = Colors.white;
 //                                      _transcolor = Colors.white;
 //                                      _stockcolor = Colors.white;
@@ -255,33 +280,7 @@ class _SideBarState extends State<SideBar>
                                     thickness: 0.5,
                                     color: Colors.grey.withOpacity(1),
                                   ),
-                                  MenuItem(
-                                    image: AssetImage('assets/images/supplier_list.png'),
-                                    title: "Parent Category List",
-                                    color:_parentcategorycolor ,
-                                    onTap: () {
-                                      _addDashcolor = Colors.white;
-                                      _adddevcolor = Colors.white;
-                                      _addmenuListcolor = Colors.white;
-                                      _categorycolor = Colors.white;
-                                      _parentcategorycolor = Colors.deepOrangeAccent;
-//                                      _attendcolor = Colors.white;
-//                                      _transcolor = Colors.white;
-//                                      _stockcolor = Colors.white;
-//                                      _expensecolor =Colors.white;
-//                                      _supplistcolor = Colors.white;
-//                                      _prodlistcolor = Colors.white;
-//                                      _unitlistcolor = Colors.white;
-                                      onIconPressed();
-                                      BlocProvider.of<NavigationBloc>(context)
-                                          .add(NavigationEvents.ParentCategoryClickedEvent);
-                                    },
-                                  ),
-                                  Divider(
-                                    height: 2,
-                                    thickness: 0.5,
-                                    color: Colors.grey.withOpacity(1),
-                                  ),
+
 //                                  MenuItem(
 //                                    image: AssetImage('assets/images/attendance.png'),
 //                                    title: "Attendance",

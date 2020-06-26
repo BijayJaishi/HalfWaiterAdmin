@@ -2,9 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:halfwaiteradminapp/MainSideNav.dart';
+import 'package:halfwaiteradminapp/SidebarItems/navigation_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:dio/dio.dart';
@@ -319,10 +321,13 @@ class _FormCardMenuState extends State<FormCardMenu> {
                       width: ScreenUtil.getInstance().setWidth(235),
                       height: ScreenUtil.getInstance().setHeight(80),
                       decoration: BoxDecoration(
-                          gradient: LinearGradient(colors: [
-                            Colors.orange,
-                            Colors.deepOrangeAccent,
-                          ]),
+                          gradient: LinearGradient(
+                            colors: <Color>[
+                              Color(0xFF0D47A1),
+                              Color(0xFF1976D2),
+                              Color(0xFF42A5F5),
+                            ],
+                          ),
                           borderRadius: BorderRadius.circular(6.0),
                           boxShadow: [
                             BoxShadow(
@@ -446,12 +451,8 @@ class _FormCardMenuState extends State<FormCardMenu> {
                 backgroundColor: Colors.red,
                 timeInSecForIos: 1);
 
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => SideMain(
-                      widget.id,widget.name,widget.onStatus)),
-            );
+            BlocProvider.of<NavigationBloc>(context)
+                .add(NavigationEvents.MenuListClickedEvent);
           } else {
             Fluttertoast.showToast(
                 msg: "Failed to add Data",
@@ -539,10 +540,13 @@ class _FormCardMenuState extends State<FormCardMenu> {
                       width: ScreenUtil.getInstance().setWidth(150),
                       height: ScreenUtil.getInstance().setHeight(70),
                       decoration: BoxDecoration(
-                          gradient: LinearGradient(colors: [
-                            Colors.orange,
-                            Colors.deepOrangeAccent,
-                          ]),
+                          gradient: LinearGradient(
+                            colors: <Color>[
+                              Color(0xFF0D47A1),
+                              Color(0xFF1976D2),
+                              Color(0xFF42A5F5),
+                            ],
+                          ),
                           borderRadius: BorderRadius.circular(6.0),
                           border: Border.all(color: Colors.black, width: 1.5),
                           boxShadow: [
@@ -582,10 +586,13 @@ class _FormCardMenuState extends State<FormCardMenu> {
                       width: ScreenUtil.getInstance().setWidth(150),
                       height: ScreenUtil.getInstance().setHeight(70),
                       decoration: BoxDecoration(
-                          gradient: LinearGradient(colors: [
-                            Colors.orange,
-                            Colors.deepOrangeAccent,
-                          ]),
+                          gradient: LinearGradient(
+                            colors: <Color>[
+                              Color(0xFF0D47A1),
+                              Color(0xFF1976D2),
+                              Color(0xFF42A5F5),
+                            ],
+                          ),
                           borderRadius: BorderRadius.circular(6.0),
                           border: Border.all(color: Colors.black, width: 1.5),
                           boxShadow: [
@@ -640,10 +647,13 @@ class _FormCardMenuState extends State<FormCardMenu> {
                 width: ScreenUtil.getInstance().setWidth(120),
                 height: ScreenUtil.getInstance().setHeight(50),
                 decoration: BoxDecoration(
-                    gradient: LinearGradient(colors: [
-                      Colors.orange,
-                      Colors.deepOrangeAccent,
-                    ]),
+                    gradient: LinearGradient(
+                      colors: <Color>[
+                        Color(0xFF0D47A1),
+                        Color(0xFF1976D2),
+                        Color(0xFF42A5F5),
+                      ],
+                    ),
                     borderRadius: BorderRadius.circular(6.0),
                     border: Border.all(color: Colors.black, width: 1.5),
                     boxShadow: [
@@ -679,10 +689,13 @@ class _FormCardMenuState extends State<FormCardMenu> {
                 width: ScreenUtil.getInstance().setWidth(120),
                 height: ScreenUtil.getInstance().setHeight(50),
                 decoration: BoxDecoration(
-                    gradient: LinearGradient(colors: [
-                      Colors.orange,
-                      Colors.deepOrangeAccent,
-                    ]),
+                    gradient: LinearGradient(
+                      colors: <Color>[
+                        Color(0xFF0D47A1),
+                        Color(0xFF1976D2),
+                        Color(0xFF42A5F5),
+                      ],
+                    ),
                     borderRadius: BorderRadius.circular(6.0),
                     border: Border.all(color: Colors.black, width: 1.5),
                     boxShadow: [

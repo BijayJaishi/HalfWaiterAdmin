@@ -218,7 +218,7 @@ class AlertDialog extends StatelessWidget {
     this.titlePadding,
     this.titleTextStyle,
     this.content,
-    this.contentPadding = const EdgeInsets.fromLTRB(24.0, 20.0, 24.0, 24.0),
+    this.contentPadding = const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
     this.contentTextStyle,
     this.actions,
     this.backgroundColor,
