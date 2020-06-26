@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:halfwaiteradminapp/Login/login.dart';
+import 'package:halfwaiteradminapp/Model_Classes/PendingOrderModel.dart';
 import 'package:halfwaiteradminapp/Model_Classes/TodayEarningModel.dart';
 import 'package:halfwaiteradminapp/Model_Classes/TodayOrderModel.dart';
 import 'package:halfwaiteradminapp/Model_Classes/TotalEarningModel.dart';
@@ -28,6 +29,7 @@ class _DashboardState extends State<Dashboard> {
   var todayOrder = "0";
   var totalEarning = "0";
   var totalOrder = "0";
+  var pendingOrder ="0";
   bool toogleValue;
   String onValue;
   bool _isLoading;
@@ -43,6 +45,7 @@ class _DashboardState extends State<Dashboard> {
     _fetchTodayOrderItem(widget.id);
     _fetchTotalEarningItem(widget.id);
     _fetchTotalOrderItem(widget.id);
+    _fetchPendingOrderItem(widget.id);
   }
 
   @override
@@ -311,6 +314,15 @@ class _DashboardState extends State<Dashboard> {
                                     alignment: Alignment.center,
                                     child: Padding(
                                       padding: const EdgeInsets.only(
+                                          left: 5, right: 5),
+//                                          child: Image.asset('assets/images/attendance.png'),
+                                      child: Text(pendingOrder,style: TextStyle(color: Colors.black),),
+                                    ),
+                                  ),
+                                  Align(
+                                    alignment: Alignment.center,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
                                            left: 5.0, right: 5.0),
                                       child: FittedBox(
                                         fit: BoxFit.scaleDown,
@@ -465,6 +477,7 @@ class _DashboardState extends State<Dashboard> {
                       children: <Widget>[
                         InkWell(
                           child: Card(
+                            elevation: 5,
                             child: Container(
                               width: ScreenUtil.getInstance().setWidth(300),
                               height: ScreenUtil.getInstance().setHeight(250),
@@ -482,47 +495,37 @@ class _DashboardState extends State<Dashboard> {
                                   ]),
                               child: Material(
                                 color: Colors.transparent,
-                                child: InkWell(
-//                                  splashColor: Colors.blue,
-                                  onTap: () {
-//                                    BlocProvider.of<NavigationBloc>(context)
-//                                        .add(NavigationEvents.AttendanceClickedEvent);
-                                  },
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      Align(
-                                        alignment: Alignment.center,
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 5, right: 5),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Align(
+                                      alignment: Alignment.center,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 5, right: 5),
 //                                          child: Image.asset('assets/images/attendance.png'),
-                                        child: Text(totalOrder,style: TextStyle(color: Colors.white),),
-                                        ),
+                                      child: Text(totalOrder,style: TextStyle(color: Colors.white),),
                                       ),
-//                                          }
-//                                        }
-//                                    ),
+                                    ),
 
-                                      Align(
-                                        alignment: Alignment.bottomCenter,
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 2.0, left: 5, right: 5),
-                                          child: FittedBox(
-                                            fit: BoxFit.scaleDown,
-                                            child: Text("Total Order",
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontFamily: "Poppins",
-                                                    fontSize: 15,
-                                                    letterSpacing: 0.8)),
-                                          ),
+                                    Align(
+                                      alignment: Alignment.bottomCenter,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 2.0, left: 5, right: 5),
+                                        child: FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          child: Text("Total Order",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontFamily: "Poppins",
+                                                  fontSize: 15,
+                                                  letterSpacing: 0.8)),
                                         ),
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
@@ -753,6 +756,19 @@ class _DashboardState extends State<Dashboard> {
     });
 
     return totalOrder;
+  }
+  _fetchPendingOrderItem(userId) async {
+    String dataURL =
+        "https://www.admin.halfwaiter.com/demo/api/request/pendingOrder?user_id=$userId";
+
+    http.Response response =
+    await http.get(dataURL, headers: {"x-api-key": r"Eprim@Res!"});
+    final pendingOrderList = pendingOrderModelFromJson(response.body);
+    setState(() {
+      pendingOrder = pendingOrderList.data;
+    });
+
+    return pendingOrder;
   }
 
   void postData( String userId,String onValue) async {

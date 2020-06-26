@@ -94,7 +94,7 @@ class _MyAppState extends State<MyApp> {
                 alignment: Alignment.center,
                 decoration: new BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage("assets/images/logoOnlyHead.png"),
+                      image: AssetImage("assets/images/logoHead.png"),
                       fit: BoxFit.cover),
                 ),
               ),
