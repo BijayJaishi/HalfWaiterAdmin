@@ -1,6 +1,8 @@
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:halfwaiteradminapp/SidebarItems/navigation_bloc.dart';
 
 import '../MainSideNav.dart';
 import 'FormCardMenu.dart';
@@ -95,39 +97,39 @@ class _AddMenuState extends State<AddMenu> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 4.0),
-                    child: InkWell(
-                      splashColor: Colors.blue,
-                      onTap: (){
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SideMain(
-                                  widget.id,widget.name,widget.onStatus)),
-                        );
-                      },
+//                    child: InkWell(
+//                      splashColor: Colors.blue,
+//                      onTap: (){
+//                        Navigator.pushReplacement(
+//                          context,
+//                          MaterialPageRoute(
+//                              builder: (context) => SideMain(
+//                                  widget.id,widget.name,widget.onStatus)),
+//                        );
+//                      },
                       child: CircleAvatar(
                         radius: 28,
-                        backgroundColor: Colors.deepOrangeAccent,
-//                        child: IconButton(
-//                          splashColor: Colors.blue,
-//                          icon: Icon(
-//                            Icons.dashboard,
-//                            size: 28,
-//                            color: Colors.black,
-//                          ),
-//                          tooltip: "DashBoard",
-//                          onPressed: () {
-//                            Navigator.pushReplacement(
-//                              context,
-//                              MaterialPageRoute(
-//                                  builder: (context) => SideMain(
-//                                      widget.id,widget.name,widget.onStatus)),
-//                            );
-//                          },
-//                        )
-                        child: Image.asset('assets/images/dashboard.png'),
+                        backgroundColor: Color.fromRGBO(59, 128, 198, 1),
+                        child: IconButton(
+                          splashColor: Colors.red,
+                          icon: Icon(
+                            Icons.home,
+                            size: 30,
+                            color: Colors.white,
+                          ),
+                          tooltip: "DashBoard",
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SideMain(
+                                      widget.id,widget.name,widget.onStatus)),
+                            );
+                          },
+                        )
+//                        child: Image.asset('assets/images/dashboard.png'),
                       ),
-                    ),
+//                    ),
                   ),
                 ],
               )

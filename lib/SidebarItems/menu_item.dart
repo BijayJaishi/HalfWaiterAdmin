@@ -18,7 +18,7 @@ class MenuItem extends StatelessWidget {
           color: color,
           height: 50,
           child: FlatButton(
-            splashColor: Colors.blueAccent,
+            splashColor: Color.fromRGBO(59, 128, 198, 0.4),
             onPressed: onTap,
             child: Row(
               children: <Widget>[

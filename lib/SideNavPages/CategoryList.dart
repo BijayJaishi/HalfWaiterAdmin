@@ -1,5 +1,6 @@
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:halfwaiteradminapp/Model_Classes/CategoryListModel.dart';
 import 'package:http/http.dart' as http;
 import 'package:halfwaiteradminapp/SidebarItems/navigation_bloc.dart';
@@ -42,13 +43,37 @@ class _CategoryListState extends State<CategoryList> {
   }
 
   bool myInterceptor(bool stopDefaultButtonEvent) {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-          builder: (context) => SideMain(
-              widget.id,widget.name,widget.onStatus)),
-    );
+//    Navigator.pushReplacement(
+//      context,
+//      MaterialPageRoute(
+//          builder: (context) => SideMain(
+//              widget.id,widget.name,widget.onStatus)),
+//    );
+    Fluttertoast.showToast(
+      msg: "Press Dashboard Button At Top Right",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Colors.blueAccent,
+      timeInSecForIos: 1,
+      textColor: Colors.white,
+    ); // Do
     return true;
+  }
+
+  var refreshKey = GlobalKey<RefreshIndicatorState>();
+
+  Future<Null> getscroolView() async{
+
+    refreshKey.currentState?.show(atTop: false);
+    await Future.delayed(Duration(seconds: 2));
+
+
+    setState(() {
+      getCard(context);
+    });
+
+    return null;
+
   }
 
   @override
@@ -69,7 +94,7 @@ class _CategoryListState extends State<CategoryList> {
             left: 0,
             right: 0,
             bottom: 0,
-            child: getCard(context),
+            child: RefreshIndicator(child: getCard(context),onRefresh: getscroolView,)
           ),
 
         ],
@@ -77,7 +102,7 @@ class _CategoryListState extends State<CategoryList> {
         floatingActionButton: new FloatingActionButton(
             elevation: 0.0,
             child: new Icon(Icons.add),
-            backgroundColor: new Color(0xFFE57373),
+            backgroundColor: Color.fromRGBO(59, 128, 198, 1),
             onPressed: (){
               _showDialogCategory(widget.id);
             }
@@ -135,39 +160,39 @@ class _CategoryListState extends State<CategoryList> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 4.0),
-                    child: InkWell(
-                      splashColor: Colors.blue,
-                      onTap: (){
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SideMain(
-                                  widget.id,widget.name,widget.onStatus)),
-                        );
-                      },
+//                    child: InkWell(
+//                      splashColor: Colors.blue,
+//                      onTap: (){
+//                        Navigator.pushReplacement(
+//                          context,
+//                          MaterialPageRoute(
+//                              builder: (context) => SideMain(
+//                                  widget.id,widget.name,widget.onStatus)),
+//                        );
+//                      },
                       child: CircleAvatar(
                         radius: 28,
-                        backgroundColor: Colors.deepOrangeAccent,
-//                        child: IconButton(
-//                          splashColor: Colors.blue,
-//                          icon: Icon(
-//                            Icons.dashboard,
-//                            size: 28,
-//                            color: Colors.black,
-//                          ),
-//                          tooltip: "DashBoard",
-//                          onPressed: () {
-//                            Navigator.pushReplacement(
-//                              context,
-//                              MaterialPageRoute(
-//                                  builder: (context) => SideMain(
-//                                      widget.id,widget.name,widget.onStatus)),
-//                            );
-//                          },
-//                        )
-                        child: Image.asset('assets/images/dashboard.png'),
+                        backgroundColor: Color.fromRGBO(59, 128, 198, 1),
+                        child: IconButton(
+                          splashColor: Colors.blue,
+                          icon: Icon(
+                            Icons.home,
+                            size: 30,
+                            color: Colors.white,
+                          ),
+                          tooltip: "DashBoard",
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SideMain(
+                                      widget.id,widget.name,widget.onStatus)),
+                            );
+                          },
+                        )
+//                        child: Image.asset('assets/images/dashboard.png'),
                       ),
-                    ),
+//                    ),
                   ),
                 ],
               )
@@ -222,7 +247,7 @@ class _CategoryListState extends State<CategoryList> {
                       )),
                 );
               } else {
-                return Container(
+                return  Container(
                     child: ListView.builder(
                         padding: EdgeInsets.only(top: 6),
                         itemCount: categoryName.length,

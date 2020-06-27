@@ -451,8 +451,13 @@ class _FormCardMenuState extends State<FormCardMenu> {
                 backgroundColor: Colors.red,
                 timeInSecForIos: 1);
 
-            BlocProvider.of<NavigationBloc>(context)
-                .add(NavigationEvents.MenuListClickedEvent);
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => SideMain(
+                      widget.id,widget.name,widget.onStatus)),
+            );
+
           } else {
             Fluttertoast.showToast(
                 msg: "Failed to add Data",

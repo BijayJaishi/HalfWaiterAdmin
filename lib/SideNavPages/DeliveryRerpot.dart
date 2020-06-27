@@ -1,6 +1,7 @@
 import 'package:back_button_interceptor/back_button_interceptor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:halfwaiteradminapp/Model_Classes/DeliveryModel.dart';
 import 'package:halfwaiteradminapp/SidebarItems/navigation_bloc.dart';
 import 'package:http/http.dart' as http;
@@ -38,12 +39,20 @@ class _DeliveryReportState extends State<DeliveryReport> {
   }
 
   bool myInterceptor(bool stopDefaultButtonEvent) {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-          builder: (context) => SideMain(
-              widget.id,widget.name,widget.onStatus)),
-    );
+//    Navigator.pushReplacement(
+//      context,
+//      MaterialPageRoute(
+//          builder: (context) => SideMain(
+//              widget.id,widget.name,widget.onStatus)),
+//    );
+    Fluttertoast.showToast(
+      msg: "Press Dashboard Button At Top Right",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Colors.blueAccent,
+      timeInSecForIos: 1,
+      textColor: Colors.white,
+    ); // Do
     return true;
   }
 
@@ -103,39 +112,39 @@ class _DeliveryReportState extends State<DeliveryReport> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 4.0),
-                    child: InkWell(
-                      splashColor: Colors.blue,
-                      onTap: (){
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SideMain(
-                                  widget.id,widget.name,widget.onStatus)),
-                        );
-                      },
-                      child: CircleAvatar(
+//                    child: InkWell(
+//                      splashColor: Colors.blue,
+//                      onTap: (){
+//                        Navigator.pushReplacement(
+//                          context,
+//                          MaterialPageRoute(
+//                              builder: (context) => SideMain(
+//                                  widget.id,widget.name,widget.onStatus)),
+//                        );
+//                      },
+                    child: CircleAvatar(
                         radius: 28,
-                        backgroundColor: Colors.deepOrangeAccent,
-//                        child: IconButton(
-//                          splashColor: Colors.blue,
-//                          icon: Icon(
-//                            Icons.dashboard,
-//                            size: 28,
-//                            color: Colors.black,
-//                          ),
-//                          tooltip: "DashBoard",
-//                          onPressed: () {
-//                            Navigator.pushReplacement(
-//                              context,
-//                              MaterialPageRoute(
-//                                  builder: (context) => SideMain(
-//                                      widget.id,widget.name,widget.onStatus)),
-//                            );
-//                          },
-//                        )
-                        child: Image.asset('assets/images/dashboard.png'),
-                      ),
+                        backgroundColor: Color.fromRGBO(59, 128, 198, 1),
+                        child: IconButton(
+                          splashColor: Colors.blue,
+                          icon: Icon(
+                            Icons.home,
+                            size: 30,
+                            color: Colors.white,
+                          ),
+                          tooltip: "DashBoard",
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SideMain(
+                                      widget.id,widget.name,widget.onStatus)),
+                            );
+                          },
+                        )
+//                        child: Image.asset('assets/images/dashboard.png'),
                     ),
+//                    ),
                   ),
                 ],
               )

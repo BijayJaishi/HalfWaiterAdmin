@@ -18,7 +18,8 @@ class SideBar extends StatefulWidget {
 
 class _SideBarState extends State<SideBar>
     with SingleTickerProviderStateMixin<SideBar> {
-  Color _addDashcolor = Colors.blueAccent;
+
+  Color _addDashcolor = Color.fromRGBO(59, 128, 198, 0.4);
   Color _adddevcolor = Colors.white;
   Color _deliveryReportcolor = Colors.white;
   Color _addmenuListcolor = Colors.white;
@@ -91,7 +92,7 @@ class _SideBarState extends State<SideBar>
                           height: MediaQuery.of(context).size.height ,
                           margin: EdgeInsets.only(top: 0),
                           decoration: BoxDecoration(
-                            border: Border.all(color: Colors.deepOrangeAccent),
+                            border: Border.all(color: Color.fromRGBO(59, 128, 198, 1),),
                           ),
                           child: Container(
                             height: MediaQuery.of(context).size.height,
@@ -104,7 +105,7 @@ class _SideBarState extends State<SideBar>
                                     height: 115,
                                     child: Card(
                                       margin: EdgeInsets.all(0.0),
-                                      color: Colors.green,
+                                      color:Color.fromRGBO(59, 128, 198, 1),
                                       child: ListTile(
                                         title: Text(
                                           "Welcome",
@@ -118,7 +119,7 @@ class _SideBarState extends State<SideBar>
                                           child: Text(
                                             widget.name,
                                             style: TextStyle(
-                                              color: Colors.black,
+                                              color: Colors.white,
                                               fontSize: 30,
                                             ),
                                           ),
@@ -143,7 +144,7 @@ class _SideBarState extends State<SideBar>
                                     title: "DashBoard",
                                     color: _addDashcolor,
                                     onTap: () {
-                                      _addDashcolor = Colors.blueAccent;
+                                      _addDashcolor = Color.fromRGBO(59, 128, 198, 0.4);
                                       _adddevcolor = Colors.white;
                                       _deliveryReportcolor = Colors.white;
                                       _addmenuListcolor = Colors.white;
@@ -174,7 +175,7 @@ class _SideBarState extends State<SideBar>
                                     color: _adddevcolor,
                                     onTap: () {
                                       _addDashcolor = Colors.white;
-                                      _adddevcolor = Colors.blueAccent;
+                                      _adddevcolor = Color.fromRGBO(59, 128, 198, 0.4);
                                       _deliveryReportcolor = Colors.white;
                                       _addmenuListcolor = Colors.white;
                                       _categorycolor = Colors.white;
@@ -205,7 +206,7 @@ class _SideBarState extends State<SideBar>
                                     onTap: () {
                                       _addDashcolor = Colors.white;
                                       _adddevcolor = Colors.white;
-                                      _deliveryReportcolor = Colors.blueAccent;
+                                      _deliveryReportcolor = Color.fromRGBO(59, 128, 198, 0.4);
                                       _addmenuListcolor = Colors.white;
                                       _categorycolor = Colors.white;
 
@@ -234,7 +235,7 @@ class _SideBarState extends State<SideBar>
                                       _addDashcolor = Colors.white;
                                       _adddevcolor = Colors.white;
                                       _deliveryReportcolor = Colors.white;
-                                      _addmenuListcolor = Colors.blueAccent;
+                                      _addmenuListcolor = Color.fromRGBO(59, 128, 198, 0.4);
                                       _categorycolor = Colors.white;
 //                                      _attendcolor = Colors.white;
 //                                      _transcolor = Colors.white;
@@ -262,7 +263,7 @@ class _SideBarState extends State<SideBar>
                                       _adddevcolor = Colors.white;
                                       _deliveryReportcolor = Colors.white;
                                       _addmenuListcolor = Colors.white;
-                                      _categorycolor = Colors.blueAccent;
+                                      _categorycolor = Color.fromRGBO(59, 128, 198, 0.4);
 //                                      _attendcolor = Colors.white;
 //                                      _transcolor = Colors.white;
 //                                      _stockcolor = Colors.white;
@@ -487,12 +488,12 @@ class _SideBarState extends State<SideBar>
                           child: Container(
                             width: 35,
                             height: 110,
-                            color: Colors.deepOrangeAccent,
+                            color: Color.fromRGBO(59, 128, 198, 1),
                             alignment: Alignment.centerLeft,
                             child: AnimatedIcon(
                               progress: _animationController.view,
                               icon: AnimatedIcons.menu_close,
-                              color: Colors.black,
+                              color: Colors.white,
                               size: 25,
                             ),
                           ),

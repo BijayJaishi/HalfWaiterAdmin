@@ -49,12 +49,20 @@ class _MenuListState extends State<MenuList> {
   }
 
   bool myInterceptor(bool stopDefaultButtonEvent) {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-          builder: (context) => SideMain(
-              widget.id,widget.name,widget.onStatus)),
-    );
+//    Navigator.pushReplacement(
+//      context,
+//      MaterialPageRoute(
+//          builder: (context) => SideMain(
+//              widget.id,widget.name,widget.onStatus)),
+//    );
+    Fluttertoast.showToast(
+      msg: "Press Dashboard Button At Top Right",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Colors.blueAccent,
+      timeInSecForIos: 1,
+      textColor: Colors.white,
+    ); // Do
     return true;
   }
 
@@ -134,13 +142,13 @@ class _MenuListState extends State<MenuList> {
                           padding: const EdgeInsets.only(right:8.0),
                           child: CircleAvatar(
                               radius: 20,
-                              backgroundColor: Colors.deepOrangeAccent,
+                              backgroundColor:Color.fromRGBO(59, 128, 198, 1) ,
                               child: IconButton(
-                                splashColor: Colors.blue,
+                                splashColor: Colors.red,
                                 icon: Icon(
                                   Icons.add,
                                   size: 20,
-                                  color: Colors.black,
+                                  color: Colors.white,
                                 ),
                                 tooltip: "Add Menu",
                                 onPressed: () {
@@ -153,28 +161,9 @@ class _MenuListState extends State<MenuList> {
                                 },
                               )),
                         ),
-                         InkWell(
-                          splashColor: Colors.blue,
-                          onTap: (){
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => SideMain(
-                                      widget.id,widget.name,widget.onStatus)),
-                            );
-                          },
-                          child: CircleAvatar(
-                            radius: 20,
-                            backgroundColor: Colors.deepOrangeAccent,
-//                        child: IconButton(
+//                         InkWell(
 //                          splashColor: Colors.blue,
-//                          icon: Icon(
-//                            Icons.dashboard,
-//                            size: 28,
-//                            color: Colors.black,
-//                          ),
-//                          tooltip: "DashBoard",
-//                          onPressed: () {
+//                          onTap: (){
 //                            Navigator.pushReplacement(
 //                              context,
 //                              MaterialPageRoute(
@@ -182,10 +171,29 @@ class _MenuListState extends State<MenuList> {
 //                                      widget.id,widget.name,widget.onStatus)),
 //                            );
 //                          },
-//                        )
-                            child: Image.asset('assets/images/dashboard.png'),
+                           CircleAvatar(
+                            radius: 20,
+                            backgroundColor: Color.fromRGBO(59, 128, 198, 1),
+                        child: IconButton(
+                          splashColor: Colors.red,
+                          icon: Icon(
+                            Icons.home,
+                            size: 22,
+                            color: Colors.white,
                           ),
-                        ),
+                          tooltip: "DashBoard",
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SideMain(
+                                      widget.id,widget.name,widget.onStatus)),
+                            );
+                          },
+                        )
+//                            child: Image.asset('assets/images/dashboard.png'),
+                          ),
+//                        ),
                       ],
                     ),
                   ),
