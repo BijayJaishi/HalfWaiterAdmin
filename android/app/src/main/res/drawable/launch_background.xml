@@ -6,8 +6,7 @@
 <!--    &lt;!&ndash; You can insert your own image assets here &ndash;&gt;-->
     <item>
         <bitmap
-            android:gravity="center_vertical"
-            android:src="@drawable/logosplash" />
+            android:src="@drawable/finalhalfwaitersplash" />
     </item>
 
 </layer-list>

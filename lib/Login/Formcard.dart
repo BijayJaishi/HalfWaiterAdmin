@@ -5,9 +5,13 @@ import 'package:halfwaiteradminapp/Dashboard/Dashboard.dart';
 import 'package:halfwaiteradminapp/MainSideNav.dart';
 import 'package:halfwaiteradminapp/Model_Classes/loginmodel.dart';
 import 'package:http/http.dart' as http;
+import 'package:progress_dialog/progress_dialog.dart';
+
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
+
+ProgressDialog pr;
 
 class FormCard extends StatefulWidget {
   @override
@@ -23,7 +27,6 @@ class _FormCardState extends State<FormCard> {
   String _email;
   bool _isLoading = false;
   bool _obscureText = true;
-
 
 
   _onRememberMeChanged(bool newValue) => setState(() {
@@ -56,8 +59,24 @@ class _FormCardState extends State<FormCard> {
   @override
   Widget build(BuildContext context) {
 
-    return new Container(
+    pr = ProgressDialog(
+      context,
+      type: ProgressDialogType.Normal,
+      textDirection: TextDirection.rtl,
+      isDismissible: true,
+    );
+    pr.style(
+      message:
+      'Please Wait ',
+      borderRadius: 10.0,
+      backgroundColor: Colors.white,
+      elevation: 10.0,
+      insetAnimCurve: Curves.easeInOut,
+      messageTextStyle: TextStyle(
+          color: Colors.black, fontSize: 19.0, fontWeight: FontWeight.w600),
 
+    );
+    return new Container(
       child: new Form(
         key: _formKey,
         autovalidate: _autoValidate,
@@ -206,6 +225,7 @@ class _FormCardState extends State<FormCard> {
                         setState(() {
                           _isLoading = true;
                         });
+                        pr.show();
                         _validateInputs();
                       },
                       child: Center(
@@ -290,48 +310,58 @@ class _FormCardState extends State<FormCard> {
       'password': pass
     };
     var jsonResponse;
-    var response = await http.post("https://www.admin.halfwaiter.com/demo/api/request/userlogin", headers: {"x-api-key": r"Eprim@Res!"}, body: data);
+    var response = await http.post("https://www.admin.halfwaiter.com/api/request/userlogin", headers: {"x-api-key": r"Eprim@Res!"}, body: data);
     if(response.statusCode == 200) {
       final loginResponseData = loginmodelFromJson(response.body);
       jsonResponse = json.decode(response.body);
 
       if(jsonResponse != null) {
         if (loginResponseData.status == 1){
-          Fluttertoast.showToast(
-              msg: "Login Successfull.",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
-              backgroundColor: Colors.red,
-              timeInSecForIos: 1
-          );
-          for(Datum datum in loginResponseData.data){
-//            print(datum.id);
-            if (rememberMe) {
-              saveData(datum.email,_password,datum.id,datum.active,datum.name,datum.online);
-            } else {
-              saveData(null, null,datum.id,datum.active,datum.name,datum.online);
-            }
-            if(datum.active == "1"){
-//              FocusScope.of(context).requestFocus(FocusNode());
-              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => SideMain(datum.id,datum.name,datum.online)), (Route<dynamic> route) => false);
-            }else {
+          if(pr.isShowing()){
+
+            pr.hide().then((isHidden) {
               Fluttertoast.showToast(
-                  msg: "sorry ! your account is currently inactive",
+                  msg: "Login Successfull.",
                   toastLength: Toast.LENGTH_SHORT,
                   gravity: ToastGravity.BOTTOM,
                   backgroundColor: Colors.red,
                   timeInSecForIos: 1
               );
-            }
+              for(Datum datum in loginResponseData.data){
+//            print(datum.id);
+                if (rememberMe) {
+                  saveData(datum.email,_password,datum.id,datum.active,datum.name,datum.online);
+                } else {
+                  saveData(null, null,datum.id,datum.active,datum.name,datum.online);
+                }
+                if(datum.active == "1"){
+//              FocusScope.of(context).requestFocus(FocusNode());
+                  Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => SideMain(datum.id,datum.name,datum.online)), (Route<dynamic> route) => false);
+                }else {
+                  Fluttertoast.showToast(
+                      msg: "sorry ! your account is currently inactive",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      backgroundColor: Colors.red,
+                      timeInSecForIos: 1
+                  );
+                }
+              }
+            });
           }
         }else{
-          Fluttertoast.showToast(
-              msg: "Login Failed!!",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.BOTTOM,
-              backgroundColor: Colors.red,
-              timeInSecForIos: 1
-          );
+          if(pr.isShowing()){
+            pr.hide().then((isHidden) {
+              print(isHidden);
+              Fluttertoast.showToast(
+                  msg: "Login Failed!!",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM,
+                  backgroundColor: Colors.red,
+                  timeInSecForIos: 1
+              );
+            });
+          }
         }
 
         setState(() {

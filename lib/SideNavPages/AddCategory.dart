@@ -7,6 +7,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:halfwaiteradminapp/SidebarItems/navigation_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'package:progress_dialog/progress_dialog.dart';
+
+ProgressDialog pr;
 
 class AddCategory extends StatefulWidget {
   final id;
@@ -34,7 +37,7 @@ class _AddCategoryState extends State<AddCategory> {
 
   Future<String> getParentCategory() async {
     String dataURL =
-        "https://www.admin.halfwaiter.com/demo/api/request/parentCategory";
+        "https://www.admin.halfwaiter.com/api/request/parentCategory";
     http.Response res =
     await http.get(dataURL, headers: {"x-api-key": r"Eprim@Res!"});
 
@@ -55,6 +58,22 @@ class _AddCategoryState extends State<AddCategory> {
   }
   @override
   Widget build(BuildContext context) {
+    pr = ProgressDialog(
+      context,
+      type: ProgressDialogType.Normal,
+      isDismissible: true,
+    );
+    pr.style(
+      message:
+      'Adding Category ',
+      borderRadius: 10.0,
+      backgroundColor: Colors.white,
+      elevation: 10.0,
+      insetAnimCurve: Curves.easeInOut,
+      messageTextStyle: TextStyle(
+          color: Colors.black, fontSize: 19.0, fontWeight: FontWeight.w600),
+
+    );
     String formattedDate = DateFormat('yyyy-MM-dd').format(now);
     return new Container(
       child: new Form(
@@ -232,31 +251,43 @@ class _AddCategoryState extends State<AddCategory> {
     };
     var jsonResponse;
     var response = await http.post(
-        "https://www.admin.halfwaiter.com/demo/api/request/addCategory",
+        "https://www.admin.halfwaiter.com/api/request/addCategory",
         headers: {"x-api-key": r"Eprim@Res!"},
         body: data);
     if (response.statusCode == 200) {
       jsonResponse = json.decode(response.body);
 
       if (jsonResponse != null) {
-        Fluttertoast.showToast(
-            msg: "Data Added Successfully.",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            backgroundColor: Colors.red,
-            timeInSecForIos: 1);
+        if(pr.isShowing()){
+          pr.hide().then((isHidden){
 
-        Navigator.of(context, rootNavigator: true).pop();
-        setState(() {
-          _isLoading = false;
-        });
+            Fluttertoast.showToast(
+                msg: "Category Added Successfully.",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.blueAccent,
+                timeInSecForIos: 1);
+
+            Navigator.of(context, rootNavigator: true).pop();
+            Navigator.of(context).pop(false);
+            setState(() {
+              _isLoading = false;
+            });
+          });
+        }
       } else {
-        Fluttertoast.showToast(
-            msg: "Failed to add Data",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            backgroundColor: Colors.red,
-            timeInSecForIos: 1);
+        if(pr.isShowing()){
+
+          pr.hide().then((isHidden) {
+            Fluttertoast.showToast(
+                msg: "Failed to add Category",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.blueAccent,
+                timeInSecForIos: 1);
+          });
+        }
+
       }
     } else {
       setState(() {
@@ -341,9 +372,10 @@ class _AddCategoryState extends State<AddCategory> {
                   color: Colors.transparent,
                   child: InkWell(
                     onTap: () {
-                      FocusScope.of(context).requestFocus(FocusNode());
+//                      FocusScope.of(context).requestFocus(FocusNode());
+                      pr.show();
                       postData(_categoryName,_parentCategoryfinal,widget.id);
-                      Navigator.of(context).pop(false);
+//                      Navigator.of(context).pop(false);
                     },
                     child: Center(
                       child: Text("Yes",

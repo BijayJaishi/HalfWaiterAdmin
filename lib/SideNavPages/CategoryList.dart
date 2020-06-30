@@ -283,7 +283,7 @@ class _CategoryListState extends State<CategoryList> {
   }
 
   _fetchListItem(userId) async {
-    String dataURL = "https://www.admin.halfwaiter.com/demo/api/request/menuCategory?user_id=$userId";
+    String dataURL = "https://www.admin.halfwaiter.com/api/request/menuCategory?user_id=$userId";
     http.Response response = await http.get(dataURL,headers: {"x-api-key": r"Eprim@Res!"});
     categoryName.clear();
     for (Datum  datum  in categoryListModelFromJson(response.body).data) {

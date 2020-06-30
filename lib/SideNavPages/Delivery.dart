@@ -805,7 +805,7 @@
 ////    );
 ////  }
 //  _fetchListItem(userId) async {
-//    String dataURL = "https://www.admin.halfwaiter.com/demo/api/request/adminDeliveryOrder?user_id=$userId";
+//    String dataURL = "https://www.admin.halfwaiter.com/api/request/adminDeliveryOrder?user_id=$userId";
 //    http.Response response = await http.get(dataURL,headers: {"x-api-key": r"Eprim@Res!"});
 //    deliveryName.clear();
 //    for (Datum datum  in deliveryModelFromJson(response.body).data) {

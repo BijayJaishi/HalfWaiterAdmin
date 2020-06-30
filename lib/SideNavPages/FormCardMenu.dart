@@ -11,6 +11,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
+import 'package:progress_dialog/progress_dialog.dart';
+
+ProgressDialog pr;
 
 class FormCardMenu extends StatefulWidget {
   final String id,name,onStatus ;
@@ -81,6 +84,23 @@ class _FormCardMenuState extends State<FormCardMenu> {
 
   @override
   Widget build(BuildContext context) {
+
+    pr = ProgressDialog(
+      context,
+      type: ProgressDialogType.Normal,
+      isDismissible: true,
+    );
+    pr.style(
+      message:
+      'Adding Menu ',
+      borderRadius: 10.0,
+      backgroundColor: Colors.white,
+      elevation: 10.0,
+      insetAnimCurve: Curves.easeInOut,
+      messageTextStyle: TextStyle(
+          color: Colors.black, fontSize: 19.0, fontWeight: FontWeight.w600),
+
+    );
 
     return new Container(
       child: new Form(
@@ -429,7 +449,7 @@ class _FormCardMenuState extends State<FormCardMenu> {
       formData.add("dprice", dPrice);
       formData.add("desc", desc);
       dio
-          .post("https://www.admin.halfwaiter.com/demo/api/request/addMenu",
+          .post("https://www.admin.halfwaiter.com/api/request/addMenu",
           data: formData,
           options: Options(
               method: 'POST',
@@ -444,27 +464,38 @@ class _FormCardMenuState extends State<FormCardMenu> {
           var data = r.data;
 //          print('responseResult : $data');
           if (data != null) {
-            Fluttertoast.showToast(
-                msg: "Data Added Successfully.",
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.BOTTOM,
-                backgroundColor: Colors.red,
-                timeInSecForIos: 1);
+            if(pr.isShowing()){
+              pr.hide().then((isHidden){
 
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => SideMain(
-                      widget.id,widget.name,widget.onStatus)),
-            );
+                Fluttertoast.showToast(
+                    msg: "Menu Added Successfully.",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    backgroundColor: Colors.blueAccent,
+                    timeInSecForIos: 1);
+
+                Navigator.of(context, rootNavigator: true).pop();
+                Navigator.of(context).pop(false);
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => SideMain(
+                          widget.id,widget.name,widget.onStatus)),
+                );
+              });
+            }
 
           } else {
-            Fluttertoast.showToast(
-                msg: "Failed to add Data",
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.BOTTOM,
-                backgroundColor: Colors.red,
-                timeInSecForIos: 1);
+            if(pr.isShowing()){
+              pr.hide().then((isHidden) {
+                Fluttertoast.showToast(
+                    msg: "Failed to add Menu",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    backgroundColor: Colors.blueAccent,
+                    timeInSecForIos: 1);
+              });
+            }
           }
         });
       });
@@ -714,8 +745,9 @@ class _FormCardMenuState extends State<FormCardMenu> {
                   child: InkWell(
                     onTap: (){
                       FocusScope.of(context).requestFocus(FocusNode());
+                      pr.show();
                       postData(mName,widget.id,mCatIdFinal,imageFile,mPrice,mDiscountPrice,mDesc);
-                      Navigator.of(context).pop(false);
+//                      Navigator.of(context).pop(false);
                     },
                     child: Center(
                       child: Text("Yes",

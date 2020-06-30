@@ -720,7 +720,7 @@ class _DeliveryReportState extends State<DeliveryReport> {
   }
 
   _fetchListItem(userId) async {
-    String dataURL = "https://www.admin.halfwaiter.com/demo/api/request/adminDeliveryOrderHistory?user_id=$userId";
+    String dataURL = "https://www.admin.halfwaiter.com/api/request/adminDeliveryOrderHistory?user_id=$userId";
     http.Response response = await http.get(dataURL,headers: {"x-api-key": r"Eprim@Res!"});
     deliveryName.clear();
     orderName.clear();
@@ -734,7 +734,7 @@ class _DeliveryReportState extends State<DeliveryReport> {
   }
 
 //  _fetchOrderListItem(userId) async {
-//    String dataURL = "https://www.admin.halfwaiter.com/demo/api/request/adminDeliveryOrder?user_id=$userId";
+//    String dataURL = "https://www.admin.halfwaiter.com/api/request/adminDeliveryOrder?user_id=$userId";
 //    http.Response response = await http.get(dataURL,headers: {"x-api-key": r"Eprim@Res!"});
 //    deliveryName.clear();
 //    orderName.clear();

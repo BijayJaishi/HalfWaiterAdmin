@@ -186,7 +186,7 @@ class _ParentCategoryListState extends State<ParentCategoryList> {
   }
 
   _fetchListItem(userId) async {
-    String dataURL = "https://www.admin.halfwaiter.com/demo/api/request/parentCategory";
+    String dataURL = "https://www.admin.halfwaiter.com/api/request/parentCategory";
     http.Response response = await http.get(dataURL,headers: {"x-api-key": r"Eprim@Res!"});
     parentcategoryName.clear();
     for (Datum  datum  in parentCategoryListModelFromJson(response.body).data) {

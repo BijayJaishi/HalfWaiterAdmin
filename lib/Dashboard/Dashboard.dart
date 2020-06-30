@@ -708,7 +708,7 @@ class _DashboardState extends State<Dashboard> {
 
   _fetchTodayEarningItem(userId) async {
     String dataURL =
-        "https://www.admin.halfwaiter.com/demo/api/request/todayEarning?user_id=$userId";
+        "https://www.admin.halfwaiter.com/api/request/todayEarning?user_id=$userId";
 
     http.Response response =
     await http.get(dataURL, headers: {"x-api-key": r"Eprim@Res!"});
@@ -720,7 +720,7 @@ class _DashboardState extends State<Dashboard> {
   }
   _fetchTodayOrderItem(userId) async {
     String dataURL =
-        "https://www.admin.halfwaiter.com/demo/api/request/todayOrder?user_id=$userId";
+        "https://www.admin.halfwaiter.com/api/request/todayOrder?user_id=$userId";
 
     http.Response response =
     await http.get(dataURL, headers: {"x-api-key": r"Eprim@Res!"});
@@ -733,7 +733,7 @@ class _DashboardState extends State<Dashboard> {
   }
   _fetchTotalEarningItem(userId) async {
     String dataURL =
-        "https://www.admin.halfwaiter.com/demo/api/request/totalEarning?user_id=$userId";
+        "https://www.admin.halfwaiter.com/api/request/totalEarning?user_id=$userId";
 
     http.Response response =
     await http.get(dataURL, headers: {"x-api-key": r"Eprim@Res!"});
@@ -746,7 +746,7 @@ class _DashboardState extends State<Dashboard> {
   }
   _fetchTotalOrderItem(userId) async {
     String dataURL =
-        "https://www.admin.halfwaiter.com/demo/api/request/totalOrder?user_id=$userId";
+        "https://www.admin.halfwaiter.com/api/request/totalOrder?user_id=$userId";
 
     http.Response response =
     await http.get(dataURL, headers: {"x-api-key": r"Eprim@Res!"});
@@ -759,7 +759,7 @@ class _DashboardState extends State<Dashboard> {
   }
   _fetchPendingOrderItem(userId) async {
     String dataURL =
-        "https://www.admin.halfwaiter.com/demo/api/request/pendingOrder?user_id=$userId";
+        "https://www.admin.halfwaiter.com/api/request/pendingOrder?user_id=$userId";
 
     http.Response response =
     await http.get(dataURL, headers: {"x-api-key": r"Eprim@Res!"});
@@ -778,7 +778,7 @@ class _DashboardState extends State<Dashboard> {
     };
     var jsonResponse;
     var response = await http.post(
-        "https://www.admin.halfwaiter.com/demo/api/request/resStatus",
+        "https://www.admin.halfwaiter.com/api/request/resStatus",
         headers: {"x-api-key": r"Eprim@Res!"},
         body: data);
 //    print(response.body);

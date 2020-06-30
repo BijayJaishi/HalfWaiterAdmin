@@ -7,8 +7,11 @@ import 'package:halfwaiteradminapp/Model_Classes/MenuListModel.dart';
 import 'package:halfwaiteradminapp/SideNavPages/AddMenu.dart';
 import 'package:halfwaiteradminapp/SidebarItems/navigation_bloc.dart';
 import 'package:http/http.dart' as http;
+import 'package:progress_dialog/progress_dialog.dart';
 
 import '../MainSideNav.dart';
+
+ProgressDialog pr;
 
 class MenuList extends StatefulWidget with NavigationStates {
   final String id, name,onStatus;
@@ -69,6 +72,24 @@ class _MenuListState extends State<MenuList> {
 
   @override
   Widget build(BuildContext context) {
+
+    pr = ProgressDialog(
+      context,
+      type: ProgressDialogType.Normal,
+      textDirection: TextDirection.rtl,
+      isDismissible: true,
+    );
+    pr.style(
+      message:
+      'Changing Status',
+      borderRadius: 10.0,
+      backgroundColor: Colors.white,
+      elevation: 10.0,
+      insetAnimCurve: Curves.easeInOut,
+      messageTextStyle: TextStyle(
+          color: Colors.black, fontSize: 19.0, fontWeight: FontWeight.w600),
+
+    );
     return Scaffold(
       body: Stack(
         children: <Widget>[
@@ -293,6 +314,12 @@ class _MenuListState extends State<MenuList> {
               tooltip: "Active",
               onPressed: () {
                 setState(() {
+                  pr.update(
+                    message: 'Deactivating Menu Item',
+                    messageTextStyle: TextStyle(
+                        color: Colors.black, fontSize: 19.0, fontWeight: FontWeight.w600),
+                  );
+                  pr.show();
                   activeStatus ='0';
                   postData(menuName[index].menuId,activeStatus);
                 });
@@ -310,6 +337,12 @@ class _MenuListState extends State<MenuList> {
               tooltip: "Inactive",
               onPressed: () {
                 setState(() {
+                  pr.update(
+                    message: 'Activating Menu Item',
+                    messageTextStyle: TextStyle(
+                        color: Colors.black, fontSize: 19.0, fontWeight: FontWeight.w600),
+                  );
+                  pr.show();
                   activeStatus ='1';
                   postData(menuName[index].menuId,activeStatus);
                 });
@@ -325,7 +358,7 @@ class _MenuListState extends State<MenuList> {
   _fetchListItem(userId) async {
 //    print("id:"+site);
     String dataURL =
-        "https://www.admin.halfwaiter.com/demo/api/request/menuAdmin?id=$userId";
+        "https://www.admin.halfwaiter.com/api/request/menuAdmin?id=$userId";
     http.Response response =
         await http.get(dataURL, headers: {"x-api-key": r"Eprim@Res!"});
     menuName.clear();
@@ -349,7 +382,7 @@ class _MenuListState extends State<MenuList> {
     };
     var jsonResponse;
     var response = await http.post(
-        "https://www.admin.halfwaiter.com/demo/api/request/menuStatus",
+        "https://www.admin.halfwaiter.com/api/request/menuStatus",
         headers: {"x-api-key": r"Eprim@Res!"},
         body: data);
 //    print(response.body);
@@ -358,24 +391,36 @@ class _MenuListState extends State<MenuList> {
       jsonResponse = json.decode(response.body);
 
       if (jsonResponse != null) {
-        Fluttertoast.showToast(
-            msg: "Status Changed Successfully.",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            backgroundColor: Colors.red,
-            timeInSecForIos: 1);
+        if(pr.isShowing()){
+          pr.hide().whenComplete(() {
+
+            Fluttertoast.showToast(
+                msg: "Status Changed Successfully.",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.red,
+                timeInSecForIos: 1);
 
 //        Navigator.of(context, rootNavigator: true).pop();
-        setState(() {
-          _isLoading = false;
-        });
+            setState(() {
+              _isLoading = false;
+            });
+          });
+        }
+
       } else {
-        Fluttertoast.showToast(
-            msg: "Failed to add Data",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            backgroundColor: Colors.red,
-            timeInSecForIos: 1);
+
+        if(pr.isShowing()){
+          pr.hide().whenComplete(() {
+            Fluttertoast.showToast(
+                msg: "Failed to change Status",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.red,
+                timeInSecForIos: 1);
+          });
+        }
+
       }
     } else {
       setState(() {

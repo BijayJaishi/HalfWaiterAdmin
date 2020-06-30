@@ -10,8 +10,11 @@ import 'package:halfwaiteradminapp/SidebarItems/navigation_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:halfwaiteradminapp/Custom_dialog/customDialog.dart'
     as customDialog;
+import 'package:progress_dialog/progress_dialog.dart';
 
 import '../MainSideNav.dart';
+
+ProgressDialog pr;
 
 class Delivery extends StatefulWidget with NavigationStates {
   String id, name,onStatus;
@@ -32,6 +35,7 @@ class _DeliveryState extends State<Delivery> {
   final TextEditingController controllerReferenceId =
       new TextEditingController();
   String typedReference;
+  String acceptStatus;
 
 //  _onSelected(int index) {
 //    setState(() => _selectedIndex = index);
@@ -71,10 +75,40 @@ class _DeliveryState extends State<Delivery> {
     ); // Do
     return true;
   }
+  Future<Null> getscroolView() async{
+    var refresshKey = GlobalKey<RefreshIndicatorState>();
+
+    refresshKey.currentState?.show(atTop: false);
+    await Future.delayed(Duration(seconds: 2));
 
 
+    setState(() {
+      getCard(context);
+    });
+
+    return null;
+
+  }
   @override
   Widget build(BuildContext context) {
+
+    pr = ProgressDialog(
+      context,
+      type: ProgressDialogType.Normal,
+      textDirection: TextDirection.rtl,
+      isDismissible: true,
+    );
+    pr.style(
+      message:
+      'Please Wait',
+      borderRadius: 10.0,
+      backgroundColor: Colors.white,
+      elevation: 10.0,
+      insetAnimCurve: Curves.easeInOut,
+      messageTextStyle: TextStyle(
+          color: Colors.black, fontSize: 19.0, fontWeight: FontWeight.w600),
+
+    );
     return Scaffold(
       body: Stack(
         children: <Widget>[
@@ -90,7 +124,7 @@ class _DeliveryState extends State<Delivery> {
             left: 0,
             right: 0,
             bottom: 0,
-            child: getCard(context),
+            child: RefreshIndicator(child: getCard(context),onRefresh: getscroolView,),
           ),
         ],
       ),
@@ -215,7 +249,7 @@ class _DeliveryState extends State<Delivery> {
                         child: Text(
                           snapshot.error == null
                               ? "Please Wait ..."
-                              : "There Is No Any Menu List",
+                              : "There Is No Any Order List",
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 16,
@@ -408,14 +442,14 @@ class _DeliveryState extends State<Delivery> {
               paidStatus == 'Paid'
                   ? Container(
                       child: RaisedButton(
-                        onPressed: () {
-                          Fluttertoast.showToast(
-                              msg: "Already Paid",
-                              toastLength: Toast.LENGTH_SHORT,
-                              gravity: ToastGravity.BOTTOM,
-                              backgroundColor: Colors.red,
-                              timeInSecForIos: 1);
-                        },
+//                        onPressed: () {
+//                          Fluttertoast.showToast(
+//                              msg: "Already Paid",
+//                              toastLength: Toast.LENGTH_SHORT,
+//                              gravity: ToastGravity.BOTTOM,
+//                              backgroundColor: Colors.red,
+//                              timeInSecForIos: 1);
+//                        },
                         textColor: Colors.white,
                         padding: const EdgeInsets.all(0.0),
                         child: Container(
@@ -433,7 +467,7 @@ class _DeliveryState extends State<Delivery> {
                             padding: const EdgeInsets.all(10.0),
                             child: Center(
                                 child: const Text('Paid',
-                                    style: TextStyle(fontSize: 20)))),
+                                    style: TextStyle(fontSize: 20,color: Colors.white)))),
                       ),
                     )
                   : RaisedButton(
@@ -448,6 +482,12 @@ class _DeliveryState extends State<Delivery> {
 //                     }
 ////
 
+                        pr.update(
+                          message: 'Accepting Payment',
+                          messageTextStyle: TextStyle(
+                              color: Colors.black, fontSize: 19.0, fontWeight: FontWeight.w600),
+                        );
+                        pr.show();
                         postInvoiceData(deliveryId, referenceId,
                             code.toString(), total.toString());
                       },
@@ -589,6 +629,7 @@ class _DeliveryState extends State<Delivery> {
   //////////////////// ----------------- end invoice view -------------------------------- ///////
 
   Widget getOrderRow(int index, String name, List<Order> orders) {
+      acceptStatus = orders[0].status;
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(4.0),
@@ -834,7 +875,7 @@ class _DeliveryState extends State<Delivery> {
     );
   }
 
-  Widget _showDialogOrderView(name, orders, deliverId) {
+  Widget _showDialogOrderView(String name, List<Order> orders, String deliverId) {
     // flutter defined function
     showDialog(
       context: context,
@@ -865,20 +906,57 @@ class _DeliveryState extends State<Delivery> {
                   child: getOrderElementList(name, orders),
                 ),
               ),
-              RaisedButton(
-                onPressed: () {
-//                  print(deliverId);
 
-                  if (deliverId != null) {
+              orders[0].status =='1'?Container(
+                child: RaisedButton(
+//                        onPressed: () {
+//                          Fluttertoast.showToast(
+//                              msg: "Already Accepted",
+//                              toastLength: Toast.LENGTH_SHORT,
+//                              gravity: ToastGravity.BOTTOM,
+//                              backgroundColor: Colors.red,
+//                              timeInSecForIos: 1);
+//                        },
+                  textColor: Colors.white,
+                  padding: const EdgeInsets.all(0.0),
+                  child: Container(
+                      width: 105,
+                      height: 50,
+                      decoration: const BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: <Color>[
+                            Color(0xFF0D47A1),
+                            Color(0xFF1976D2),
+                            Color(0xFF42A5F5),
+                          ],
+                        ),
+                      ),
+                      padding: const EdgeInsets.all(10.0),
+                      child: Center(
+                          child: const Text('Accepted',
+                              style: TextStyle(fontSize: 20,color: Colors.white)))),
+                ),
+              )
+                  :RaisedButton(
+                onPressed: () {
+
+
+//                  if (deliverId != null) {
+                    pr.update(
+                      message:'Accepting Order',
+                      messageTextStyle: TextStyle(
+                          color: Colors.black, fontSize: 19.0, fontWeight: FontWeight.w600),
+                    );
+                    pr.show();
                     postData(deliverId);
-                  } else {
-                    Fluttertoast.showToast(
-                        msg: "Delivery Id Required !!",
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.BOTTOM,
-                        backgroundColor: Colors.red,
-                        timeInSecForIos: 1);
-                  }
+//                  } else {
+//                    Fluttertoast.showToast(
+//                        msg: "Delivery Id Required !!",
+//                        toastLength: Toast.LENGTH_SHORT,
+//                        gravity: ToastGravity.BOTTOM,
+//                        backgroundColor: Colors.red,
+//                        timeInSecForIos: 1);
+//                  }
                 },
                 textColor: Colors.white,
                 padding: const EdgeInsets.all(0.0),
@@ -954,12 +1032,15 @@ class _DeliveryState extends State<Delivery> {
                       timeInSecForIos: 1,
                       textColor: Colors.white,
                     );
-                    Navigator.of(context).pop();
                     if(controllerReferenceId.text == referenceId){
-
+                      pr.update(
+                        message: 'Checking Reference Id',
+                        messageTextStyle: TextStyle(
+                            color: Colors.black, fontSize: 19.0, fontWeight: FontWeight.w600),
+                      );
+                      pr.show();
                       postDeliveryAccept(controllerReferenceId.text);
                     }else{
-
                       Fluttertoast.showToast(
                         msg: "Reference ID is Incorrect",
                         toastLength: Toast.LENGTH_SHORT,
@@ -1032,32 +1113,42 @@ class _DeliveryState extends State<Delivery> {
     };
     var jsonResponse;
     var response = await http.post(
-        "https://www.admin.halfwaiter.com/demo/api/request/acceptDelivery",
+        "https://www.admin.halfwaiter.com/api/request/acceptDelivery",
         headers: {"x-api-key": r"Eprim@Res!"},
         body: data);
     if (response.statusCode == 200) {
       jsonResponse = json.decode(response.body);
 
       if (jsonResponse != null) {
-        Fluttertoast.showToast(
-            msg: "Delivery Completed Successfully.",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            backgroundColor: Colors.red,
-            timeInSecForIos: 1);
-        controllerReferenceId.clear();
+        if(pr.isShowing()){
+          pr.hide().then((isHidden) {
 
-//        Navigator.of(context, rootNavigator: true).pop();
-        setState(() {
-          _isLoading = false;
-        });
+            Fluttertoast.showToast(
+                msg: "Delivery Completed Successfully.",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.red,
+                timeInSecForIos: 1);
+            controllerReferenceId.clear();
+
+        Navigator.of(context, rootNavigator: true).pop();
+            setState(() {
+              _isLoading = false;
+            });
+          });
+        }
       } else {
-        Fluttertoast.showToast(
-            msg: "Failed to Complete Delivery",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            backgroundColor: Colors.red,
-            timeInSecForIos: 1);
+        if(pr.isShowing()){
+          pr.hide().then((isHidden) {
+
+            Fluttertoast.showToast(
+                msg: "Failed to Complete Delivery",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.red,
+                timeInSecForIos: 1);
+          });
+        }
       }
     } else {
       setState(() {
@@ -1072,31 +1163,40 @@ class _DeliveryState extends State<Delivery> {
     };
     var jsonResponse;
     var response = await http.post(
-        "https://www.admin.halfwaiter.com/demo/api/request/acceptOrders",
+        "https://www.admin.halfwaiter.com/api/request/acceptOrders",
         headers: {"x-api-key": r"Eprim@Res!"},
         body: data);
     if (response.statusCode == 200) {
       jsonResponse = json.decode(response.body);
 
       if (jsonResponse != null) {
-        Fluttertoast.showToast(
-            msg: "Order Accepted Successfully.",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            backgroundColor: Colors.red,
-            timeInSecForIos: 1);
+        if(pr.isShowing()){
+          pr.hide().then((isHidden) {
+            Fluttertoast.showToast(
+                msg: "Order Accepted Successfully.",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.blueAccent,
+                timeInSecForIos: 1);
 
-        Navigator.of(context, rootNavigator: true).pop();
-        setState(() {
-          _isLoading = false;
-        });
+
+            Navigator.of(context, rootNavigator: true).pop();
+            setState(() {
+              _isLoading = false;
+            });
+          });
+        }
       } else {
-        Fluttertoast.showToast(
-            msg: "Failed to accept Order",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            backgroundColor: Colors.red,
-            timeInSecForIos: 1);
+        if(pr.isShowing()){
+          pr.hide().then((isHidden) {
+            Fluttertoast.showToast(
+                msg: "Failed to accept Order",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.blueAccent,
+                timeInSecForIos: 1);
+          });
+        }
       }
     } else {
       setState(() {
@@ -1120,31 +1220,43 @@ class _DeliveryState extends State<Delivery> {
     };
     var jsonResponse;
     var response = await http.post(
-        "https://www.admin.halfwaiter.com/demo/api/request/acceptPayment",
+        "https://www.admin.halfwaiter.com/api/request/acceptPayment",
         headers: {"x-api-key": r"Eprim@Res!"},
         body: data);
     if (response.statusCode == 200) {
       jsonResponse = json.decode(response.body);
 
       if (jsonResponse != null) {
-        Fluttertoast.showToast(
-            msg: "Payment Accepted Successfully.",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            backgroundColor: Colors.red,
-            timeInSecForIos: 1);
+        if(pr.isShowing()){
+          pr.hide().then((isHidden) {
 
-        Navigator.of(context, rootNavigator: true).pop();
-        setState(() {
-          _isLoading = false;
-        });
+            Fluttertoast.showToast(
+                msg: "Payment Accepted Successfully.",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.red,
+                timeInSecForIos: 1);
+
+            Navigator.of(context, rootNavigator: true).pop();
+            setState(() {
+              _isLoading = false;
+            });
+          });
+        }
+
       } else {
-        Fluttertoast.showToast(
-            msg: "Failed to accept Payment",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            backgroundColor: Colors.red,
-            timeInSecForIos: 1);
+        if(pr.isShowing()){
+          pr.hide().then((isHidden) {
+
+            Fluttertoast.showToast(
+                msg: "Failed to accept Payment",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.red,
+                timeInSecForIos: 1);
+          });
+        }
+
       }
     } else {
       setState(() {
@@ -1156,7 +1268,7 @@ class _DeliveryState extends State<Delivery> {
 
   _fetchListItem(userId) async {
     String dataURL =
-        "https://www.admin.halfwaiter.com/demo/api/request/adminDeliveryOrder?user_id=$userId";
+        "https://www.admin.halfwaiter.com/api/request/adminDeliveryOrder?user_id=$userId";
     http.Response response =
         await http.get(dataURL, headers: {"x-api-key": r"Eprim@Res!"});
     deliveryName.clear();
@@ -1169,7 +1281,7 @@ class _DeliveryState extends State<Delivery> {
   }
 
 //  _fetchOrderListItem(userId) async {
-//    String dataURL = "https://www.admin.halfwaiter.com/demo/api/request/adminDeliveryOrder?user_id=$userId";
+//    String dataURL = "https://www.admin.halfwaiter.com/api/request/adminDeliveryOrder?user_id=$userId";
 //    http.Response response = await http.get(dataURL,headers: {"x-api-key": r"Eprim@Res!"});
 //    deliveryName.clear();
 //    orderName.clear();
